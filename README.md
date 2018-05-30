@@ -111,7 +111,7 @@ let projectsData = [
     }
 ];
 ```
-Change the data to reflect a project you've worked on, if it doesn't have a url, just use http://google.com as a palceholder.
+Change the data to reflect a project you've worked on, if it doesn't have a url, just use http://google.com as a placeholder.
 
 Now, let's return that data when we visit `/api/projects`
 ```
@@ -137,7 +137,7 @@ In recent years, cloud companies like Amazon (AWS), Google Cloud and Heroku have
 We simply provide them with a git repo that runs a web server - they host it and handle all the messy stuff like load, when our app goes viral.
 
 ## Heroku
-Heroku isn't often used by enterprise comainies, but it's great for small personal projects because it's **FREE** and **EASY AF**.
+Heroku isn't often used by enterprise companies, but it's great for small personal projects because it's **FREE** and **EASY AF**.
 
 If you haven't already - create a free account of your own at https://heroku.com
 
@@ -292,12 +292,12 @@ npm start
 If you head over to http://localhost:5000 we should see a very rough website starting to form!
 
 # Production
-The code we have is great! But it's designed to be run in Developement mode on our local dev machine. 
+The code we have is great! But it's designed to be run in Development mode on our local dev machine. 
 
-* Errors very specific, so we can fix them easilly
+* Errors very specific, so we can fix them easily
 * Source maps are included so we can debug live in the browser (with code we wrote) 
 
-However, these features aren't ideal to ship to users of our websites. We want to ship **fast** code that's been **bundled** ready to be conusumed in the most efficient manner by a browser. 
+However, these features aren't ideal to ship to users of our websites. We want to ship **fast** code that's been **bundled** ready to be consumed in the most efficient manner by a browser. 
 
 ## Build
 If we look inside `client/package.json` we can see the scripts that we can run. 
