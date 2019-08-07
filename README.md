@@ -11,9 +11,9 @@ The goal of the session will be to give you a simple boilerplate portfolio websi
 
 Topics we'll cover:
 
-* Write a small Node API
+* Write a small **serverless** Node API
 * Write a simple front end with React
-* Deploy our website to the web using Heroku
+* Deploy our website to the web using ZEIT
 
 ## Prerequisites / Install
 
@@ -22,11 +22,10 @@ Don't worry about cloning this repo - we're making everything from scratch today
 * A basic understanding of JavaScript
 * [Node.js](https://nodejs.org/) installed
 * An editor of your choice ([VS Code](https://code.visualstudio.com/) is great)
-* Git
-* [nodemon](https://github.com/remy/nodemon) installed (`npm i -g nodemon`)
-* [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli) installed
-* A Heroku account (free)
-* [Logged into your heroku cli](https://devcenter.heroku.com/articles/heroku-cli#getting-started)
+* [ZEIT CLI](https://zeit.co/download) installed
+* A ZEIT account (free)
+* Logged into your ZEIT cli
+    * `$ now login`
 
 # What does "full stack" mean?
 "Full stack" is one of those weird terms that means different things to different people/companies.
@@ -38,6 +37,7 @@ Generally "full stack" developers are knowledgeable across all of the layers of 
 * JavaScript
 * Back-End Language
 * Databases & Web Storage
+* Devops & Cloud Computing
 * HTTP & REST
 * Web Application Architecture
 * Git
@@ -49,180 +49,190 @@ Sounds like a lot.. But if we break it down, it's a little less scary. We'll try
 
 Before we kick into writing code, let's start with one of the most important layers - our **Web Application Architecture**
 
-* Node backend with an [Express](https://expressjs.com/) web server
+* Node backend with a **serverless** web server
 * [React](https://reactjs.org/) front end
 
-Start by creating a new folder for our project:
-```
-mkdir my-portfolio && cd my-portfolio
-```
-Now, let's generate the `package.json` file (default values are fine):
-```
-npm init
-```
-
-Great! We should have a folder with a single `package.json` file in it!
-
-This will be our `root` directory, for future reference.
-
-# Web server
-Now that we've got a home for our code, let's look at our **Back-End Language**.
-
-We're going to use [Express](https://expressjs.com/) to create our web server.
-
-Start by installing it using npm:
-```
-npm i express
-```
-
-Then, create a new file called `index.js` in the root directory.
-
-In `index.js` we'll include the code to kick our web server into life.
+We'll use `create-react-app` to generate the boilerplate of our project. This will give us everything we need to get cracking straight away.
 
 ```
-const express = require('express');
-const app = express();
-const path = require('path');
-
-const port = process.env.PORT || 5000;
-
-app.listen(port);
-console.log(`My Portfolio is listening on ${port}`);
+npx create-react-app my-portfolio
 ```
 
-Start'er up with:
-```
-node index.js
-```
-If all goes well, we should see `My Portfolio is listening on 5000` printed to the console.
-
-## API
-
-Cool, now let's put that web server to use and get some data flowing though it by creating a small API.
-
-We'll eventually pull this data from github, but for now, let's return some simple data from an endpoint.
-
-In `index.js`
-``` 
-let projectsData = [
-    {
-        name: 'Trade Me',
-        html_url: 'http://preview.trademe.co.nz',
-        description: 'I helped people buy stuff'
-    }
-];
-```
-Change the data to reflect a project you've worked on, if it doesn't have a url, just use http://google.com as a placeholder.
-
-Now, let's return that data when we visit `/api/projects`
-```
-app.get('/api/projects', (req, res) => {
-    // Return projects as json
-    res.json(projectsData);
-});
-```
-This basic api, touches our **HTTP & REST** layer of development.
-
-See if it worked by restarting your server and head to http://localhost:5000/api/projects
-
-You should be greeted by the data from your `projectsData` object!
-
-# Deploying
-
-Now for the fun part. Making this accessible to everyone outside your local network.
-
-There are thousands of ways this could be done such as using our own VPN and setting up our own server, but often that costs a lot of money and time. 
-
-In recent years, cloud companies like Amazon (AWS), Google Cloud and Heroku have developed products that streamline this process for us.
-
-We simply provide them with a git repo that runs a web server - they host it and handle all the messy stuff like load, when our app goes viral.
-
-## Heroku
-Heroku isn't often used by enterprise companies, but it's great for small personal projects because it's **FREE** and **EASY AF**.
-
-If you haven't already - create a free account of your own at https://heroku.com
-
-And download the [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli), then log in using:
-```
-heroku login
-```
-
-The basic idea of Heroku is that it can take a git repo, and does all the magic of setting it up on line for you.
-
-So let's create that git repo!
-```
-git init
-```
-
-Heroku works by looking inside our `package.json` file for a `"start"` command under `"scripts"`.
-
-We can add one:
-```
-"scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js",
-  },
-```
-
-Commit our amazing work:
+Change directory into the folder that was just created:
 
 ```
-echo node_modules > .gitignore
-git add .
-git commit -m "added web server and simple api"
-```
-Then we're ready to create our Heroku app:
-```
-heroku create
+cd my-portfolio
 ```
 
-Now, deploy!
+Looking in this folder, we have a functioning website!
 
+The `package.json` file is located in the `root` of our folder and the files we edit are located in `src`.
+
+Spin it up with:
 ```
-git push heroku master
-```
-
-It should spit out a bunch of messages (hopefully no errors), followed by a url. Head to that url and let's see if our api works.
-
-`<your url>/api/projects`
-
-If you see the object you created before, well done! You just created an api.
-
-# Front end
-Every 6 seconds someone comes out with a new JavaScript front end framework. Fact. (not really)
-
-React is a good option because its heavily used and supported. People have created great tooling to make it easy to rapidly develop applications using it.
-
-One of those tools is [create-react-app](https://github.com/facebook/create-react-app) which spins up a boilerplate react app which handles all the bits and bobs (like productionizing our code) which are sometimes annoying to do.
-
-Install it:
-```
-npm install -g create-react-app
-```
-
-Then, in your root directory of your project:
-```
-create-react-app client
-```
-
-This will spin up our front end within a folder called `client`.
-
-cd into `client` and start the application:
-```
-cd client
 npm start
 ```
 
-Then open http://localhost:3000 to see what we've just created.
+Wait for it to build, then head over to [http://localhost:3000](http://localhost:3000) and you should see your website!
 
-## Proxy
-So we don't have to worry about ports (3000/5000), Create React App will proxy API requests from the React app to the Express app if we add a “proxy” key in package.json like this:
+# Deploying
+
+ZEIT now makes it incredibly easy to deploy our `create-react-app` project. It identifies that it's a react project, then does all the build and deploy steps for us.
+
+Make sure you're logged in:
+```
+now login
+```
+
+Then deploy! (make sure you're in the project `root`)
+```
+now
+```
+
+Easy! This takes a moment, but will give you a link to the ZEIT site to check the progress and visit the site.
+
+# Serverless applications
+
+Serverless APIs are the cool new thang everyone is talking about. They don't use a traditional web server to send requests, instead you write **functions** which the platform executes for you.
+
+Today we're using ZEIT as that platform, only because it's the easiest to use, but there are many out there that do this.
+
+* [AWS Lambda](https://aws.amazon.com/lambda/)
+* [Google Cloud Functions](https://cloud.google.com/functions/docs/)
+* [Azure Functions](https://azure.microsoft.com/en-us/services/functions/)
+
+## Advantages of Serverless
+
+1. Easy to deploy 
+    * Just write and deploy your functions!
+2. Low cost
+    * No server to maintain, only runs when it's called
+3. Better Scalability
+    * Platform handles all the load for you
+
+Traditional Node API:
+```
+const express = require('express')
+const app = express()
+const port = 3000
+
+app.get('/', (req, res) => res.send('Hello World!'))
+
+app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+```
+
+Serverless API:
+```
+module.exports = (req, res) => {
+    res.send('hello world);
+}
+```
+
+Everything is just a **function**, which is run by the platform when it's needed.
+
+
+# Now Develop
+Our application is alive and deployed, but what about local development, so we don't have to deploy every time we want to make a change.
+
+`now` comes with a handy dev mode, but to use that we first must add a script in our `package.json` file:
+```
+...
+"scripts": {
+    "dev": "react-scripts start --port $PORT",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+...
+```
+Then when we run `now dev`, it will first spin up our "serverless" environment, then the React app. All changes will be instantly refreshed!
+
+# API
+Let's make our API. `now` expects all API's to come from a folder called `api`. In the root directory, create a new folder called that.
+
+Then, in this folder, we'll create our JavaScript file which holds our **function**.
+
+**The name of this file is important.** It's the route that we'll access our REST endpoint from. e.g. `projects.js` will be accessed from `http://my-now-url/api/projects`.
+
+Create a file called `projects.js` inside the `api` folder.
+
+Inside this file, put:
+```
+module.exports = (req, res) => {
+    let projectsData = [
+        {
+            name: 'BNZ',
+            html_url: 'http://bnz.co.nz',
+            description: 'Banks aren\'t boring'
+        }
+    ];
+
+    res.json(projectsData);    
+}
+```
+Feel free to change the `name`, `html_url`, and `description` parts yourself to something you'd like.
+
+This is just dummy data - we'll fetch our real data soon.
+
+If you're not already running the dev server, run:
+```
+now dev
+```
+
+After the project has built, head to [http://localhost:3000/api/projects](http://localhost:3000/api/projects) to see the response from the api we just created.
+
+## Add some real data
+It would be nice if we could add in some live data about our projects from github.
+
+The github api is really easy to use, some endpoints don't even require auth 😍
+
+The endpoint we're interested in today is to list all of our projects.
+
+`https://api.github.com/users/<your github user name>/repos`
+
+E.g. https://api.github.com/users/marcusklein/repos returns all my projects and a bit of data about them.
+
+In `index.js` with our express app, we can get the data we need from github using `node-fetch` (fetch is browser only).
 
 ```
-"proxy": "http://localhost:5000"
+npm i node-fetch
 ```
 
-This goes in `client/package.json`, *not* in the Express app’s package.json, and it will be ignored by Heroku after deploying.
+Then back in our `projects.json` file, replace the contents with:
+```
+const fetch = require('node-fetch');
+
+const githubRepoUrl = 'https://api.github.com/users/marcusklein/repos';
+
+module.exports = (req, res) => {
+    fetch(githubRepoUrl)
+        .then(res => res.json())
+        .then(projects => {
+
+            const gitHubProjects = projects.map(project => {
+                return {
+                    name: project.name,
+                    html_url: project.html_url,
+                    description: project.description
+                }
+            });
+
+            res.json(gitHubProjects);    
+        });
+}
+```
+
+Save, wait for the app to rebuild, then you should see your projects returned!
+
+That's all we need to do for our API.
+
+# Front End
+We've got some data from our API, now let's display it on our React webpage.
+
+Head into the `src` folder, from your `root` directory. This is where the heart of your React website lives.
+
+The `App.js` file is the one controling the page we can see on our website, so this is the one that we'll be editing.
 
 Now, replace `src/App.js` with:
 
@@ -252,7 +262,7 @@ class App extends Component {
         return (
             <div className="App">
 
-                <h1>Hi, my name is <your name here></h1>
+                <h1>Hi, my name is YOUR NAME</h1>
                 <h3>I'm a developer</h3>
 
                 <h4>Here are a few of my projects</h4>
@@ -283,166 +293,66 @@ If you don't quite understand what's going on, don't worry! A few [React tutoria
 
 Essentially, we're using `fetch` to access our api we created earlier, grab the project data, then looping over our projects and displaying them.
 
-Start up **both** your back end and front end:
+### Check out your site
+Run your dev server again, and check out your site!
+You should see all your projects list from your API.
 
-Root directory terminal window, then in a second terminal window in `client`:
+## Component Libraries
+
+Styling websites isn't easy, but thankfully we don't always have to start from scratch. Using **Component Libraries** we can easilly make our website look beautiful with only a few lines of code.
+
+We'll be using the [Material-Ui](https://material-ui.com/) for this. It's one of the best out there, also one of the most used.
+
+Install it:
 ```
-npm start
-```
-
-If you head over to http://localhost:5000 we should see a very rough website starting to form!
-
-# Production
-The code we have is great! But it's designed to be run in Development mode on our local dev machine. 
-
-* Errors very specific, so we can fix them easily
-* Source maps are included so we can debug live in the browser (with code we wrote) 
-
-However, these features aren't ideal to ship to users of our websites. We want to ship **fast** code that's been **bundled** ready to be consumed in the most efficient manner by a browser. 
-
-## Build
-If we look inside `client/package.json` we can see the scripts that we can run. 
-
-```
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
-  },
+npm install @material-ui/core
 ```
 
-We're interested in the "build" script. It does all the productionizing for us.
-
-It creates a full production build in a folder `client/build` - that's what we want our Express application to serve to our users.
-
-## Serving our React from Express
-
-Back in our `index.js`, we need to tell Express to serve the static files that are generated in `client/build`.
+Load the default Roboto font in the `public/index.html` file. Put it above the `<title>`.
 
 ```
-// Serve static files from the React app
-app.use(express.static(path.join(__dirname, 'client/build')));
-
-...
-
-// The "catchall" handler: for any request that doesn't
-// match one above, send back React's index.html file.
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname+'/client/build/index.html'));
-});
-```
-
-## Deploy our prod build
-In our root `package.json` file, let's tell heroku to run a production build when we deploy:
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
 
 ```
-"scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js",
-    "heroku-postbuild": "cd client && npm install && npm run build"
-  },
+
+Then back in your `src/App.js`
+
+We'll import the Button component:
+```
+import Button from '@material-ui/core/Button';
 ```
 
-`"heroku-postbuild"` will be run by Heroku after we push a new build.
-
-We can commit and deploy our new code:
-
+Then replace our links with the Button components:
 ```
-git add .
-git commit -m "added front end"
-git push heroku master
-```
-
-You may notice this time it takes a little longer to build, as Heroku is running the production build process.
-
-# Add some live data
-It would be nice if we could add in some live data from github.
-
-The github api is really easy to use, some endpoints don't even require auth 😍
-
-The endpoint we're interested in today is to list all of our projects.
-
-`https://api.github.com/users/<your github user name>/repos`
-
-E.g. https://api.github.com/users/marcusklein/repos returns all my projects and a bit of data about them.
-
-In `index.js` with our express app, we can get the data we need from github using `node-fetch` (fetch is browser only).
-
-```
-npm i node-fetch
+<Button 
+    variant="contained"
+    href={project.html_url}>
+    {project.name}
+</Button>
 ```
 
-Then, we can:
+Now with a refresh we should see better buttons.
+
+Component libaries are great. Have a play with Material-iu's components and style up your website.
+
+# Deploy live again
+Let's publish our final version!
 
 ```
-const fetch = require('node-fetch');
-
-...
-
-let projectsData = [
-    {
-        name: 'Trade Me',
-        html_url: 'http://preview.trademe.co.nz',
-        description: 'An online marketplace, where kiwis buy and sell'
-    }
-];
-
-const githubRepoUrl = 'https://api.github.com/users/marcusklein/repos';
-
-function getProjects () {
-    fetch(githubRepoUrl)
-        .then(res => res.json())
-        .then(projects => {
-
-            const gitHubProjects = projects.map(project => {
-                return {
-                    name: project.name,
-                    html_url: project.html_url,
-                    description: project.description
-                }
-            });
-
-            projectsData = projectsData.concat(gitHubProjects);
-            console.log(`Loaded ${projectsData.length} projects`);
-        });
-}
-
-getProjects();
+now
 ```
 
-The nice part about this is it's caching the data on the server, and stripping out all the data from github that we don't need.
-
-Full stack developers should have a relatively good idea what makes a website fast and performant. 
-
-Note: This means the data that comes through to our server will only be updated each time we restart it. That's called *"busting the cache"*.
-
-Sanity check that it works (never deploy broken code) by `npm start`'ing both processes.
-
-No errors? Great! Shipit!
-
-```
-git add .
-git commit -m "added live data from github"
-git push heroku master
-```
-
-Wait for it to build, then we'll see how it looks 👍️
-
-Kinda average, right? But that's for you to change!
+After it's built, we should see our app live, using our own API we've built.
 
 # Where to next?
 
 Employers LOVE seeing the work you've done. Showing them that you have a rough idea of the process of shipping code goes a long way in an interview. Feel free to use this demo as a rough boilerplate in creating a portfolio you're proud of.
 
-Things to do:
-* Style it! Basic HTML and CSS goes a long way. Stackoverflow is your friend.
-* [Change the URL](https://devcenter.heroku.com/articles/custom-domains). Github student pack gives you a free .me domain name! Heroku lets you use it!
-* Add your contact details. Some more data? Pictures of your work!
-* [Analytics](https://analytics.google.com/analytics/web/) - see who's been checking you out!
 
-
-
-Thanks 🙌 🙌 🙌 🙌
+# Thanks 🙌 🙌 🙌 🙌
 
 Hit me up if you have any issues/questions!
+
+* [marcusklein@me.com](mailto:marcusklein@me.com)
+* Twitter: [@nzmilky](https://twitter.com/nzmilky)
+* LinkedIn: [https://www.linkedin.com/in/marcus-klein-35683b93/](https://www.linkedin.com/in/marcus-klein-35683b93/)
