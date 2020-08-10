@@ -5,7 +5,7 @@ Summer of Tech JavaScript Web Application Masterclass
 
 Welcome 🖐️🖐️🖐️
 
-In this JavaScript Masterclass we'll be looking at the full development lifecycle of a website - Back end and front end, from creation to production deployment.
+In this JavaScript Masterclass we'll be looking at the full development lifecycle of a web app - Back end and front end, from creation to production deployment.
 
 The goal of the session will be to give you a simple boilerplate portfolio website.
 
@@ -185,55 +185,10 @@ This is just dummy data - we'll fetch our real data soon.
 
 If you're not already running the dev server, run:
 ```
-now dev
+vercel dev
 ```
 
 After the project has built, head to [http://localhost:3000/api/projects](http://localhost:3000/api/projects) to see the response from the api we just created.
-
-## Add some real data
-It would be nice if we could add in some live data about our projects from github.
-
-The github api is really easy to use, some endpoints don't even require auth 😍
-
-The endpoint we're interested in today is to list all of our projects.
-
-`https://api.github.com/users/<your github user name>/repos`
-
-E.g. https://api.github.com/users/marcusklein/repos returns all my projects and a bit of data about them.
-
-In `index.js` with our express app, we can get the data we need from github using `node-fetch` (fetch is browser only).
-
-```
-npm i node-fetch
-```
-
-Then back in our `projects.js` file, replace the contents with:
-```
-const fetch = require('node-fetch');
-
-const githubRepoUrl = 'https://api.github.com/users/marcusklein/repos';
-
-module.exports = (req, res) => {
-    fetch(githubRepoUrl)
-        .then(res => res.json())
-        .then(projects => {
-
-            const gitHubProjects = projects.map(project => {
-                return {
-                    name: project.name,
-                    html_url: project.html_url,
-                    description: project.description
-                }
-            });
-
-            res.json(gitHubProjects);    
-        });
-}
-```
-
-Save, wait for the app to rebuild, then you should see your projects returned!
-
-That's all we need to do for our API.
 
 # Front End
 We've got some data from our API, now let's display it on our React webpage.
@@ -295,6 +250,51 @@ If you don't quite understand what's going on, don't worry! A few [React tutoria
 
 Essentially, we're using `fetch` to access our api we created earlier, grab the project data, then looping over our projects and displaying them.
 
+## Add some real data
+It would be nice if we could add in some live data about our projects from github.
+
+The github api is really easy to use, some endpoints don't even require auth 😍
+
+The endpoint we're interested in today is to list all of our projects.
+
+`https://api.github.com/users/<your github user name>/repos`
+
+E.g. https://api.github.com/users/marcusklein/repos returns all my projects and a bit of data about them.
+
+Just like with our react code above we can use `fetch` to get data, but sadly it doesn't come out of the box with node.js (as it's not running on a browser). So we can install `node-fetch` to enable this.
+
+```
+npm i node-fetch
+```
+
+Then back in our `projects.js` file, replace the contents with:
+```
+const fetch = require('node-fetch');
+
+const githubRepoUrl = 'https://api.github.com/users/marcusklein/repos';
+
+module.exports = (req, res) => {
+    fetch(githubRepoUrl)
+        .then(res => res.json())
+        .then(projects => {
+
+            const gitHubProjects = projects.map(project => {
+                return {
+                    name: project.name,
+                    html_url: project.html_url,
+                    description: project.description
+                }
+            });
+
+            res.json(gitHubProjects);    
+        });
+}
+```
+
+Save, wait for the app to rebuild, then you should see your projects returned!
+
+That's all we need to do for our API.
+
 ### Check out your site
 Run your dev server again, and check out your site!
 You should see all your projects list from your API.
@@ -303,7 +303,7 @@ You should see all your projects list from your API.
 
 Styling websites isn't easy, but thankfully we don't always have to start from scratch. Using **Component Libraries** we can easilly make our website look beautiful with only a few lines of code.
 
-We'll be using the [Material-Ui](https://material-ui.com/) for this. It's one of the best out there, also one of the most used.
+We'll be using the [Material-UI](https://material-ui.com/) for this. It's one of the best out there, also one of the most used.
 
 Install it:
 ```
@@ -343,7 +343,7 @@ Component libaries are great. Have a play with Material-iu's components and styl
 Let's publish our final version!
 
 ```
-vercel
+vercel --prod
 ```
 
 After it's built, we should see our app live, using our own API we've built.
