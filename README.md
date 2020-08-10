@@ -1,5 +1,5 @@
-# sot-full-stack-javascript
-Summer of Tech full stack JavaScript Masterclass
+# JavaScript Web Application Masterclass
+Summer of Tech JavaScript Web Application Masterclass
 
 # Introduction
 
@@ -13,7 +13,7 @@ Topics we'll cover:
 
 * Write a small **serverless** Node API
 * Write a simple front end with React
-* Deploy our website to the web using ZEIT
+* Deploy our website to the web using Vercel
 
 ## Prerequisites / Install
 
@@ -22,32 +22,36 @@ Don't worry about cloning this repo - we're making everything from scratch today
 * A basic understanding of JavaScript
 * [Node.js](https://nodejs.org/) installed
 * An editor of your choice ([VS Code](https://code.visualstudio.com/) is great)
-* [ZEIT CLI](https://zeit.co/download) installed
-* A ZEIT account (free)
-* Logged into your ZEIT cli
-    * `$ now login`
+* [Vercel CLI](https://vercel.com/download) installed
+* A Vercel account (free)
+* Logged into your Vercel cli
+    * `$ vercel login`
 
-# What does "full stack" mean?
-"Full stack" is one of those weird terms that means different things to different people/companies.
+# What does Web Application development in 2020 look like?
+There is a lot to consider when building a web app, not to mention learn, and it can seem daunting knowing where to start.
 
-Generally "full stack" developers are knowledgeable across all of the layers of development.
+* What framework should I use? React? Angular? Vue?
+* How will I serve data? REST? GraphQL? Databases?
+* Where will I host the app?
+* How do I deploy the app?
 
-[This good article](https://medium.com/coderbyte/a-guide-to-becoming-a-full-stack-developer-in-2017-5c3c08a1600c) describes a modern full stack web developer as knowing:
-* HTML/CSS
-* JavaScript
-* Back-End Language
-* Databases & Web Storage
-* Devops & Cloud Computing
-* HTTP & REST
-* Web Application Architecture
-* Git
-* Basic Algorithms & Data Structures
+A good reference is [https://roadmap.sh/](https://roadmap.sh/).
 
-Sounds like a lot.. But if we break it down, it's a little less scary. We'll try do that today!
+It gives good pathways for both [frontend](https://roadmap.sh/frontend) and [backend](https://roadmap.sh/backend), as well as the best resources to learn them.
+
+As you can see, there is a lot that goes into modern web applications, but today we'll learn the basics from both to get you up and running so you can venture down the paths with a bit more context.
+
+# Tooling
+
+Thankfully, as developers we don't need to know everything to write a web application as tooling exists to abstract away complexity so we can dive straight into to writing our application.
+
+A good example is [Create React App](https://create-react-app.dev/). It sets us up with boilerplate code, build scripts to optimise perfomance and a nice development environment.
+
+Then we can combine this with [Vercel](https://vercel.com) as our tool to handle the deployment of our site. It deploys our app to a webserver without needing to write one 🤯
 
 # Project setup
 
-Before we kick into writing code, let's start with one of the most important layers - our **Web Application Architecture**
+Before we kick into writing code, let's explore our **Web Application Architecture**
 
 * Node backend with a **serverless** web server
 * [React](https://reactjs.org/) front end
@@ -77,19 +81,19 @@ Wait for it to build, then head over to [http://localhost:3000](http://localhost
 
 # Deploying
 
-ZEIT now makes it incredibly easy to deploy our `create-react-app` project. It identifies that it's a react project, then does all the build and deploy steps for us.
+Vercel makes it incredibly easy to deploy our `create-react-app` project. It identifies that it's a React project, then does all the build and deploy steps for us.
 
 Make sure you're logged in:
 ```
-now login
+vercel login
 ```
 
 Then deploy! (make sure you're in the project `root`)
 ```
-now
+vercel
 ```
 
-Easy! This takes a moment, but will give you a link to the ZEIT site to check the progress and visit the site.
+Easy! This takes a moment, but will give you a link to the Vercel site to check the progress and visit the site.
 
 # Serverless applications
 
@@ -131,10 +135,14 @@ module.exports = (req, res) => {
 Everything is just a **function**, which is run by the platform when it's needed.
 
 
-# Now Develop
+# Vercel Develop
 Our application is alive and deployed, but what about local development, so we don't have to deploy every time we want to make a change.
 
-`now` comes with a handy dev mode, but to use that we first must add a script in our `package.json` file:
+`vercel` comes with a handy dev mode, but to use that we first must add a script in our `package.json` file:
+```
+"dev": "react-scripts start --port $PORT",
+```
+e.g.
 ```
 ...
 "scripts": {
@@ -146,14 +154,14 @@ Our application is alive and deployed, but what about local development, so we d
   },
 ...
 ```
-Then when we run `now dev`, it will first spin up our "serverless" environment, then the React app. All changes will be instantly refreshed!
+Then when we run `vercel dev`, it will first spin up our "serverless" environment (api), then the React app. All changes will be instantly refreshed!
 
 # API
-Let's make our API. `now` expects all API's to come from a folder called `api`. In the root directory, create a new folder called that.
+Let's make our API. `vercel` expects all API's to come from a folder called `api`. In the root directory, create a new folder called that.
 
 Then, in this folder, we'll create our JavaScript file which holds our **function**.
 
-**The name of this file is important.** It's the route that we'll access our REST endpoint from. e.g. `projects.js` will be accessed from `http://my-now-url/api/projects`.
+**The name of this file is important.** It's the route that we'll access our REST endpoint from. e.g. `projects.js` will be accessed from `http://my-vercel-url/api/projects`.
 
 Create a file called `projects.js` inside the `api` folder.
 
@@ -164,14 +172,14 @@ module.exports = (req, res) => {
         {
             name: 'BNZ',
             html_url: 'http://bnz.co.nz',
-            description: 'Banks aren\'t boring'
+            description: `Banks aren't boring`
         }
     ];
 
     res.json(projectsData);    
 }
 ```
-Feel free to change the `name`, `html_url`, and `description` parts yourself to something you'd like.
+Feel free to change the `name`, `html_url`, and `description` parts yourself to something personal, if you'd like.
 
 This is just dummy data - we'll fetch our real data soon.
 
@@ -199,7 +207,7 @@ In `index.js` with our express app, we can get the data we need from github usin
 npm i node-fetch
 ```
 
-Then back in our `projects.json` file, replace the contents with:
+Then back in our `projects.js` file, replace the contents with:
 ```
 const fetch = require('node-fetch');
 
@@ -322,13 +330,15 @@ We'll import the Button component:
 import Button from '@material-ui/core/Button';
 ```
 
-Then replace our links with the Button components:
+Then replace our links (inside the `projects.map()` function) with the Button components:
 ```
-<Button 
-    variant="contained"
-    href={project.html_url}>
-    {project.name}
-</Button>
+<div style={{padding: 10}} key={project.name}>
+    <Button 
+        variant="contained"
+        href={project.html_url}>
+        {project.name}
+    </Button>
+</div>
 ```
 
 Now with a refresh we should see better buttons.
@@ -339,7 +349,7 @@ Component libaries are great. Have a play with Material-iu's components and styl
 Let's publish our final version!
 
 ```
-now
+vercel
 ```
 
 After it's built, we should see our app live, using our own API we've built.
