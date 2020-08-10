@@ -245,11 +245,6 @@ The `App.js` file is the one controling the page we can see on our website, so t
 Now, replace `src/App.js` with:
 
 
-<div key={project.name}>
-                                <p><b><a href={project.html_url}>{project.name}</a></b></p>
-                                <p>{project.description}</p>
-                            </div>
-
 ```
 import React, { useState, useEffect } from 'react';
 import './App.css';
