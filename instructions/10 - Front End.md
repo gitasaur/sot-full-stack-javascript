@@ -11,7 +11,6 @@ Now, replace `src/App.js` with:
 ```
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import Button from '@material-ui/core/Button';
 
 
 const App = () => {
@@ -67,7 +66,7 @@ The endpoint we're interested in today is to list all of our projects.
 
 `https://api.github.com/users/<your github user name>/repos`
 
-E.g. https://api.github.com/users/marcusklein/repos returns all my projects and a bit of data about them.
+E.g. https://api.github.com/users/marcusklein/repos returns all Marcus' projects and a bit of data about them.
 
 Just like with our react code above we can use `fetch` to get data, but sadly it doesn't come out of the box with node.js (as it's not running on a browser). So we can install `node-fetch` to enable this.
 
