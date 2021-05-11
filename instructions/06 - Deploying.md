@@ -6,6 +6,7 @@ Make sure you're logged in:
 ```
 vercel login
 ```
+Note: Accept all prompts if asked!
 
 Then deploy! (make sure you're in the project `root`)
 ```
