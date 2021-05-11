@@ -36,7 +36,7 @@ Then replace our links (inside the `projects.map()` function) with the Button co
 
 Now with a refresh we should see better buttons.
 
-Component libaries are great. Have a play with Material-iu's components and style up your website.
+Component libaries are great. Have a play with Material-UI's components and style up your website.
 
 ## Next
 
