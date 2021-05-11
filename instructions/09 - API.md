@@ -25,7 +25,7 @@ Feel free to change the `name`, `html_url`, and `description` parts yourself to 
 
 This is just dummy data - we'll fetch our real data soon.
 
-If you're not already running the dev server, run:
+Start (or restart) the dev server, run:
 ```
 vercel dev
 ```
