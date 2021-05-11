@@ -2,7 +2,7 @@
 
 Serverless APIs are the cool new thang everyone is talking about. They don't use a traditional web server to send requests, instead you write **functions** which the platform executes for you.
 
-Today we're using ZEIT as that platform, only because it's the easiest to use, but there are many out there that do this.
+Today we're using Vercel as that platform, only because it's the easiest to use, but there are many out there that do this.
 
 * [AWS Lambda](https://aws.amazon.com/lambda/)
 * [Google Cloud Functions](https://cloud.google.com/functions/docs/)
